@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 /**
  * Main rendering function for React
@@ -21,10 +22,10 @@ export default (templatePath, props = {}, options = {}, callback = () => {}) => 
 
     if (isStatic){
       // renderToStaticMarkup (React ids removed)
-      content = React.renderToStaticMarkup(component);
+      content = ReactDOM.renderToStaticMarkup(component);
     } else {
       // renderToString (with React ids)
-      content = React.renderToString(component);
+      content = ReactDOM.renderToString(component);
     }
 
     callback(null, content);
