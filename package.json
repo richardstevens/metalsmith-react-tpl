@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-react-tpl",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Use React in metalsmith as a templating language",
   "main": "lib/index.js",
   "scripts": {
@@ -22,7 +22,7 @@
     "engine",
     "view"
   ],
-  "author": "Richard Stevens <rsrichardsteevns@googlemail.com>",
+  "author": "Richard Stevens <rsrichardstevens@googlemail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/richardstevens/metalsmith-react-tpl/issues"
