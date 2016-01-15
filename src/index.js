@@ -11,7 +11,7 @@ import renderReactTemplates from './renderReactTemplates';
 import requireTools from './requireTools';
 
 
-const debug = debugCore('metalsmith-react-templates');
+const debug = debugCore('metalsmith-react-tpl');
 
 
 /**
