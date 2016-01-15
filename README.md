@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/richardstevens/metalsmith-react-tpl.svg?branch=master)](https://travis-ci.org/richardstevens/metalsmith-react-tpl)
+
 # metalsmith-react-tpl
 Use React in metalsmith as a templating language
 
