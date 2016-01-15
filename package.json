@@ -6,7 +6,8 @@
   "scripts": {
     "build": "babel ./src -d ./lib",
     "clean": "rm -rf ./lib",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
