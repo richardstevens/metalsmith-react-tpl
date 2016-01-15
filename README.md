@@ -9,7 +9,7 @@ Use React in metalsmith as a templating language
 ## Installation
 
 ```
-npm install richardstevens/metalsmith-react-tpl
+npm install metalsmith-react-tpl
 ```
 
 ## CLI Usage
