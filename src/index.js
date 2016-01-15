@@ -5,7 +5,7 @@ import multimatch from 'multimatch';
 import path from 'path';
 
 import {each} from 'async';
-
+import objectAssign from 'object-assign';
 import naiveTemplates from './naiveTemplates';
 import renderReactTemplates from './renderReactTemplates';
 import requireTools from './requireTools';
@@ -60,7 +60,7 @@ export default (options = {}) => {
 
       // Prepare Props
       debug('Preparing Props: %s', file);
-      let props = Object.assign({}, data, metadata, {
+      let props = objectAssign({}, data, metadata, {
         contents: data.contents.toString()
       });
 
