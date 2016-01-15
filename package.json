@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-react-tpl",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Use React in metalsmith as a templating language",
   "main": "lib/index.js",
   "scripts": {
