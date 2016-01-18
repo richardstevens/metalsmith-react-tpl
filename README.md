@@ -26,13 +26,13 @@ npm install metalsmith-react-tpl
 }
 ```
 
-  If you want to specify additional options, pass an object:
+  If you want to specify additional options, pass in an object:
 
 ```json
 {
   "plugins": {
     "metalsmith-react-tpl": {
-      "baseFile": "base.html",
+      "baseFile": "base.jsx",
       "isStatic": true,
       "directory": "templates"
     }
@@ -80,9 +80,13 @@ you might want to make use of the `requireIgnoreExt` to ignore those files.
 #### `baseFile` (optional)
 default: `null`
 
+You can pass in a .html or .jsx baseFile depending on your setup, using a react baseFile will allow you to continue using React even for your main layout template.
+
+Using a .jsx baseFile will result in the baseFile.jsx to use `isStatic: false` and be rendered with ReactDOM.renderToString option and then will not have any reactid's passed through (Your templates will still go through the `isStatic` option).
+
 Specifies a file which the contents of the react template will render into. 
 
-This is similar to the index.html file which you React.render() your components in.
+This is similar to the index.html file which you ReactDOM.render() your components in.
 
 In your base file, put `{{content}}` in the location where you want your data will render into.
 

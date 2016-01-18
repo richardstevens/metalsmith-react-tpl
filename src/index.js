@@ -93,9 +93,18 @@ export default (options = {}) => {
         if (baseFile){
           debug('Applying baseFile to contents: %s', file);
           const baseFilePath = metalsmith.path(directory, baseFile);
-          const baseFileContent = fs.readFileSync(baseFilePath, 'utf8');
-
-          data = naiveTemplates(baseFileContent, data);
+          if ( path.extname( baseFile ) === '.jsx' ) {
+            debug('Using JSX baseFile: %s', baseFile);
+            props.children = result;
+            options.isStatic = true;
+            renderReactTemplates( baseFilePath, props, options, ( err, result ) => {
+              if( err ) return callback( err );
+              data.contents = result;
+            } );
+          } else {
+            const baseFileContent = fs.readFileSync(baseFilePath, 'utf8');
+            data = naiveTemplates(baseFileContent, data);
+          }
         }
 
 
