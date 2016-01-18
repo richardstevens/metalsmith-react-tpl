@@ -1,12 +1,10 @@
 
-import {transformFileSync as babelTransform} from 'babel-core';
+import { transformFileSync as babelTransform } from 'babel-core';
 
 
 
 
-/**
- * Extensions for `require` to accept jsx
- */
+// Extensions for `require` to accept jsx
 
 // Runs babel transform
 function requireBabelCore(tooling = {}, module, filename) {
@@ -17,7 +15,7 @@ function requireBabelCore(tooling = {}, module, filename) {
 
 
 // Ignoring Files
-function requireIgnore(){
+function requireIgnore() {
   return null;
 }
 

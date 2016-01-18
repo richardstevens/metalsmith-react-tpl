@@ -6,7 +6,9 @@
   "scripts": {
     "build": "babel ./src -d ./lib",
     "clean": "rm -rf ./lib",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "ci": "npm run build && npm run lint",
+    "lint": "eslint src lib && echo 'All Good!'"
   },
   "repository": {
     "type": "git",
@@ -37,5 +39,11 @@
     "object-assign": "^2.0.0",
     "react": "^0.14.3",
     "react-dom": "^0.14.6"
+  },
+  "devDependencies": {
+    "eslint": "^1.10.3",
+    "eslint-plugin-mocha": "^1.1.0",
+    "eslint-plugin-react": "^3.15.0",
+    "mocha": "^2.3.4"
   }
 }

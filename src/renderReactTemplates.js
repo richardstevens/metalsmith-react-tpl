@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 
-/**
- * Main rendering function for React
- */
+// Main rendering function for React
 export default (templatePath, props = {}, options = {}, callback = () => {}) => {
 
   // Option for isStatic rendering
@@ -18,9 +16,9 @@ export default (templatePath, props = {}, options = {}, callback = () => {}) => 
   const component = React.createElement(template, props);
 
   try {
-    let content;
+    let content = '';
 
-    if (isStatic){
+    if (isStatic) {
       // renderToStaticMarkup (React ids removed)
       content = ReactDOM.renderToStaticMarkup(component);
     } else {
