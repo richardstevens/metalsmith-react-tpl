@@ -7,5 +7,5 @@ logs
 pids
 
 node_modules
-
+coverage
 lib

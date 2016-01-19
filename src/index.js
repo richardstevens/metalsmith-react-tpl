@@ -40,7 +40,7 @@ export default (options = {}) => {
 
   // Adding File ignore in requires.
   // In the event build systms like webpack is used.
-  if (Array.isArray(requireIgnoreExt)) {
+  if ( Array.isArray(requireIgnoreExt) && requireIgnoreExt.length ) {
     requireIgnoreExt.forEach((ext) => {
       if (!require.extensions[ext]) {
         require.extensions[ext] = requireTools.ignore;
