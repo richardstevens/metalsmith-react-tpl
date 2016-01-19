@@ -3,3 +3,10 @@ node_js:
   - "0.12"
 script:
   - npm run ci
+deploy:
+  provider: npm
+  email: "rsrichardstevens@googlemail.com"
+  api_key: "0b3c8f5f-ee32-44a7-a872-6aa31a432217"
+  skip_cleanup: true
+  on:
+    branch: master
