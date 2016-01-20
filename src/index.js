@@ -4,7 +4,7 @@ import fs from 'fs';
 import multimatch from 'multimatch';
 import path from 'path';
 
-import {each} from 'async';
+import { each } from 'async';
 import objectAssign from 'object-assign';
 import naiveTemplates from './naiveTemplates';
 import renderReactTemplates from './renderReactTemplates';
@@ -14,9 +14,7 @@ import requireTools from './requireTools';
 const debug = debugCore('metalsmith-react-tpl');
 
 
-/**
- *  Plugin Exports
- */
+// Plugin Exports
 export default (options = {}) => {
 
   const {
@@ -42,9 +40,9 @@ export default (options = {}) => {
 
   // Adding File ignore in requires.
   // In the event build systms like webpack is used.
-  if (Array.isArray(requireIgnoreExt)){
+  if ( Array.isArray(requireIgnoreExt) && requireIgnoreExt.length ) {
     requireIgnoreExt.forEach((ext) => {
-      if (!require.extensions[ext]){
+      if (!require.extensions[ext]) {
         require.extensions[ext] = requireTools.ignore;
       }
     });
@@ -66,7 +64,7 @@ export default (options = {}) => {
 
       // if opt.preserve is set
       // preserve the raw, not templated content
-      if (preserve){
+      if (preserve) {
         debug('Preserving untouched contents: %s', file);
         data.rawContents = data.contents;
       }
@@ -79,7 +77,7 @@ export default (options = {}) => {
 
       renderReactTemplates(templatePath, props, options, (err, result) => {
 
-        if (err){
+        if (err) {
           return callback(err);
         }
 
@@ -90,16 +88,16 @@ export default (options = {}) => {
 
         // If `baseFile` is specified,
         // insert content into the file.
-        if (baseFile){
+        if (baseFile) {
           debug('Applying baseFile to contents: %s', file);
           const baseFilePath = metalsmith.path(directory, baseFile);
           if ( path.extname( baseFile ) === '.jsx' ) {
             debug('Using JSX baseFile: %s', baseFile);
             props.children = result;
             options.isStatic = true;
-            renderReactTemplates( baseFilePath, props, options, ( err, result ) => {
-              if( err ) return callback( err );
-              data.contents = result;
+            renderReactTemplates( baseFilePath, props, options, ( error, results ) => {
+              if ( error ) return callback( error );
+              data.contents = results;
             } );
           } else {
             const baseFileContent = fs.readFileSync(baseFilePath, 'utf8');
@@ -110,11 +108,11 @@ export default (options = {}) => {
 
         // if `html` is set
         // Rename markdown files to html
-        if (html){
+        if (html) {
           let fileDir = path.dirname(file);
           let fileName = path.basename(file, path.extname(file)) + '.html';
 
-          if (fileDir !== '.'){
+          if (fileDir !== '.') {
             fileName = fileDir + '/' + fileName;
           }
 

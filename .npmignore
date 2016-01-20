@@ -1,3 +1,7 @@
 node_modules
+coverage
 src
+tests
+circle.yml
+.gitignore
 .travis.yml
