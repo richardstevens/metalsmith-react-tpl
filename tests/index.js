@@ -87,9 +87,10 @@ describe('index', function( ) {
       'dummy.md': {
         template: 'dummy.jsx',
         contents: '<h1>foobar</h1>',
-        baseFile: '../templates/default.jsx'
+        baseFile: 'default.jsx'
       }
     };
+    options.baseFileDirectory = path.join( __dirname, 'templates' );
     const result = index( options );
     expect( result ).to.be.a( 'function' );
     result( files, metalsmith, done );

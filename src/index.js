@@ -24,7 +24,8 @@ export default (options = {}) => {
     pattern = '**/*',
     preserve = false,
     requireIgnoreExt = [],
-    noConflict = true
+    noConflict = true,
+    baseFileDirectory = null
   } = options;
 
   let { baseFile = null } = options;
@@ -101,7 +102,8 @@ export default (options = {}) => {
       // insert content into the file.
       if (baseFile) {
         debug('Applying baseFile to contents: %s', file);
-        const baseFilePath = metalsmith.path(directory, baseFile);
+        const dir = baseFileDirectory ? baseFileDirectory : directory;
+        const baseFilePath = metalsmith.path(dir, baseFile);
         if ( path.extname( baseFile ) === '.jsx' ) {
           debug('Using JSX baseFile: %s', baseFile);
           props.children = result;
