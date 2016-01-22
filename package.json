@@ -7,7 +7,7 @@
     "build": "babel ./src -d ./lib",
     "clean": "rm -rf ./lib",
     "prepublish": "npm run build",
-    "coverage": "npm run build && istanbul cover _mocha -- --compilers js:babel/register tests/*.js && istanbul check-coverage --statements 97 --branches 90 --functions 100 --lines 98",
+    "coverage": "npm run build && istanbul cover _mocha -- --compilers js:babel/register tests/*.js && istanbul check-coverage --statements 99 --branches 93 --functions 100 --lines 99",
     "ci": "npm run coverage && npm run lint",
     "lint": "eslint tests src lib && echo 'All Good!'"
   },

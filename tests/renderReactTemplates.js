@@ -13,8 +13,8 @@ describe('renderReactTemplates', function( ) {
       expect( result ).to.be.a( 'string' );
       done( );
     };
-    renderReactTemplates( file, undefined, undefined, cb );
-    renderReactTemplates( file, undefined, undefined, undefined );
+    const { error, result } = renderReactTemplates( file, undefined, undefined );
+    cb( error, result );
   });
   it('returns stuff with everything passed in', function( done ) {
     const cb = ( err, result ) => {
@@ -22,14 +22,16 @@ describe('renderReactTemplates', function( ) {
       expect( result ).to.be.a( 'string' );
       done( );
     };
-    renderReactTemplates( file, { text: 'bar foo' }, { isStatic: false }, cb );
+    const { error, result } = renderReactTemplates( file, { text: 'bar foo' }, { isStatic: false } );
+    cb( error, result );
   });
   it('returns error if not valid', function( done ) {
     const cb = ( err, result ) => {
       expect( err ).to.not.equal( null );
-      expect( result ).to.equal( undefined );
+      expect( result ).to.equal( null );
       done( );
     };
-    renderReactTemplates( null, { text: 'bar foo' }, { isStatic: false }, cb );
+    const { error, result } = renderReactTemplates( null, { text: 'bar foo' }, { isStatic: false } );
+    cb( error, result );
   });
 });

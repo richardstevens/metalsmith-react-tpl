@@ -82,4 +82,79 @@ describe('index', function( ) {
     expect( result ).to.be.a( 'function' );
     result( files, metalsmith, done );
   });
+  it('changeable baseFile', function( done ) {
+    files = {
+      'dummy.md': {
+        template: 'dummy.jsx',
+        contents: '<h1>foobar</h1>',
+        baseFile: '../templates/default.jsx'
+      }
+    };
+    const result = index( options );
+    expect( result ).to.be.a( 'function' );
+    result( files, metalsmith, done );
+  });
+
+  describe('Errors thrown', function( ) {
+    it('Error trigger no template', function( done ) {
+      files = {
+        'dummy.md': {
+          template: 'notFound.jsx',
+          contents: '<h1>foobar</h1>',
+          baseFile: 'broken.html'
+        }
+      };
+      const result = index( options );
+      result( files, metalsmith, ( err ) => {
+        expect( err ).to.match( /Error:/ );
+        done( );
+      });
+    });
+    it('Error trigger no template or baseFile', function( done ) {
+      files = {
+        'dummy.md': {
+          template: 'notFound.jsx',
+          contents: '<h1>foobar</h1>'
+        }
+      };
+      const result = index( options );
+      result( files, metalsmith, ( err ) => {
+        expect( err ).to.match( /Error:/ );
+        done( );
+      });
+    });
+    it('Error trigger no basefile', function( done ) {
+      files = {
+        'dummy.md': {
+          template: 'dummy.jsx',
+          contents: '<h1>foobar</h1>',
+          baseFile: 'broken.jsx'
+        }
+      };
+      const result = index( options );
+      result( files, metalsmith, ( err ) => {
+        expect( err ).to.match( /Error:/ );
+        done( );
+      });
+    });
+    it('Error trigger no basefile default', function( done ) {
+      options = {
+        directory: path.join( __dirname, 'fixtures' ),
+        preserve: true,
+        noConflict: false,
+        baseFile: 'blah.jsx'
+      };
+      files = {
+        'dummy.md': {
+          template: 'dummy.jsx',
+          contents: '<h1>foobar</h1>'
+        }
+      };
+      const result = index( options );
+      result( files, metalsmith, ( err ) => {
+        expect( err ).to.match( /Error:/ );
+        done( );
+      });
+    });
+  });
 });
