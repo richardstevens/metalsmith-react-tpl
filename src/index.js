@@ -18,7 +18,6 @@ const debug = debugCore('metalsmith-react-tpl');
 export default (options = {}) => {
 
   const {
-    baseFile = null,
     defaultTemplate = 'default.jsx',
     directory = 'templates',
     html = true,
@@ -27,6 +26,9 @@ export default (options = {}) => {
     requireIgnoreExt = [],
     noConflict = true
   } = options;
+
+  let { baseFile = null } = options;
+  let originalBase = baseFile;
 
 
 
@@ -56,6 +58,12 @@ export default (options = {}) => {
     each(multimatch(Object.keys(files), pattern), (file, callback) => {
       let data = files[file];
 
+      // lets update the baseFile just for this one instance and reset later
+      if ( data.baseFile ) {
+        originalBase = baseFile;
+        baseFile = data.baseFile;
+      }
+
       // Prepare Props
       debug('Preparing Props: %s', file);
       let props = objectAssign({}, data, metadata, {
@@ -74,59 +82,68 @@ export default (options = {}) => {
       const templateKey = (noConflict) ? 'rtemplate' : 'template';
       const templatePath = metalsmith.path(directory, data[templateKey] || defaultTemplate);
 
+      const { error, result } = renderReactTemplates(templatePath, props, options );
 
-      renderReactTemplates(templatePath, props, options, (err, result) => {
-
-        if (err) {
-          return callback(err);
+      if (error) {
+        // lets reset baseFile before we exit
+        if ( data.baseFile ) {
+          baseFile = originalBase;
         }
+        return callback(error);
+      }
 
 
-        // Buffer back the result
-        data.contents = new Buffer(result);
+      // Buffer back the result
+      data.contents = new Buffer(result);
 
 
-        // If `baseFile` is specified,
-        // insert content into the file.
-        if (baseFile) {
-          debug('Applying baseFile to contents: %s', file);
-          const baseFilePath = metalsmith.path(directory, baseFile);
-          if ( path.extname( baseFile ) === '.jsx' ) {
-            debug('Using JSX baseFile: %s', baseFile);
-            props.children = result;
-            options.isStatic = true;
-            renderReactTemplates( baseFilePath, props, options, ( error, results ) => {
-              if ( error ) return callback( error );
-              data.contents = results;
-            } );
-          } else {
-            const baseFileContent = fs.readFileSync(baseFilePath, 'utf8');
-            data = naiveTemplates(baseFileContent, data);
+      // If `baseFile` is specified,
+      // insert content into the file.
+      if (baseFile) {
+        debug('Applying baseFile to contents: %s', file);
+        const baseFilePath = metalsmith.path(directory, baseFile);
+        if ( path.extname( baseFile ) === '.jsx' ) {
+          debug('Using JSX baseFile: %s', baseFile);
+          props.children = result;
+          options.isStatic = true;
+          const { error: err, result: results } = renderReactTemplates( baseFilePath, props, options );
+          if ( err ) {
+            // lets reset baseFile before we exit
+            if ( data.baseFile ) {
+              baseFile = originalBase;
+            }
+            return callback( err );
           }
+          data.contents = results;
+        } else {
+          const baseFileContent = fs.readFileSync(baseFilePath, 'utf8');
+          data = naiveTemplates(baseFileContent, data);
+        }
+      }
+
+      // if `html` is set
+      // Rename markdown files to html
+      if (html) {
+        let fileDir = path.dirname(file);
+        let fileName = path.basename(file, path.extname(file)) + '.html';
+
+        if (fileDir !== '.') {
+          fileName = fileDir + '/' + fileName;
         }
 
+        debug('Renaming file: %s -> %s', file, fileName);
 
-        // if `html` is set
-        // Rename markdown files to html
-        if (html) {
-          let fileDir = path.dirname(file);
-          let fileName = path.basename(file, path.extname(file)) + '.html';
+        delete files[file];
+        files[fileName] = data;
+      }
 
-          if (fileDir !== '.') {
-            fileName = fileDir + '/' + fileName;
-          }
-
-          debug('Renaming file: %s -> %s', file, fileName);
-
-          delete files[file];
-          files[fileName] = data;
-        }
-
-        // Complete
-        debug('Saved file: %s', file);
-        callback();
-      }); // renderReactTemplate
-
+      // Complete
+      debug('Saved file: %s', file);
+      // lets reset baseFile before we exit
+      if ( data.baseFile ) {
+        baseFile = originalBase;
+      }
+      callback();
 
     }, done); // Each
   }; // Return

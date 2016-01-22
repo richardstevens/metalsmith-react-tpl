@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/server';
 
 // Main rendering function for React
-export default (templatePath, props = {}, options = {}, callback = () => {}) => {
+export default (templatePath, props = {}, options = {} ) => {
 
   try {
     // Option for isStatic rendering
@@ -26,10 +26,10 @@ export default (templatePath, props = {}, options = {}, callback = () => {}) => 
       content = ReactDOM.renderToString(component);
     }
 
-    callback(null, content);
+    return { error: null, result: content };
 
-  } catch (err) {
-    callback(err);
+  } catch (error) {
+    return { error, result: null };
   }
 };
 
