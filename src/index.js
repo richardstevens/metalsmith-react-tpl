@@ -107,8 +107,10 @@ export default (options = {}) => {
         if ( path.extname( baseFile ) === '.jsx' ) {
           debug('Using JSX baseFile: %s', baseFile);
           props.children = result;
-          options.isStatic = true;
-          const { error: err, result: results } = renderReactTemplates( baseFilePath, props, options );
+          const newOptions = objectAssign( { }, options, {
+            isStatic: true
+          });
+          const { error: err, result: results } = renderReactTemplates( baseFilePath, props, newOptions );
           if ( err ) {
             // lets reset baseFile before we exit
             if ( data.baseFile ) {
