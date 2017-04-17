@@ -4,4 +4,3 @@ src
 tests
 circle.yml
 .gitignore
-.travis.yml
