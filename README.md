@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/richardstevens/metalsmith-react-tpl.svg?branch=master)](https://travis-ci.org/richardstevens/metalsmith-react-tpl)
-[![Circle CI](https://circleci.com/gh/richardstevens/metalsmith-react-tpl/tree/master.svg?style=svg)](https://circleci.com/gh/richardstevens/metalsmith-react-tpl/tree/master)
+[![Circle CI](https://circleci.com/gh/richardstevens/metalsmith-react-tpl/tree/master.svg?style=shield)](https://circleci.com/gh/richardstevens/metalsmith-react-tpl/tree/master)
 
 # metalsmith-react-tpl
 Use React in metalsmith as a templating language
