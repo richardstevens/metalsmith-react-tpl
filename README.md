@@ -141,6 +141,9 @@ A list of extensions to ignore. For example, `{requireIgnoreExt: ['.css']}` woul
 ignore declarations like `require('file.css')`
 
 
+#### Original license
+Thanks to [metalsmith-react-templates](https://github.com/yeojz/metalsmith-react-templates) who i originally forked from.
+
 
 
 
