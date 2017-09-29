@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Test = React.createClass({
+class Test extends React.Component {
   render() {
     return (
       <html>
@@ -8,11 +8,11 @@ const Test = React.createClass({
           <title>Dummy title</title>
         </head>
         <body>
-          <div id="content">{this.props.children}</div>
+          <div id="content">{{contents}}</div>
         </body>
       </html>
     );
   }
-});
+}
 
 export default Test;

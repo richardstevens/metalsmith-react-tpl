@@ -1,0 +1,25 @@
+{
+  "all": true,
+  "require": [
+    "babel-register"
+  ],
+  "extensions": [
+    ".jsx"
+  ],
+  "reporter": [
+    "html",
+    "text"
+  ],
+  "statements": 75,
+  "lines": 75,
+  "branches": 75,
+  "functions": 75,
+  "exclude": [
+    "src/",
+    "coverage",
+    "public",
+    "config",
+    "webpack.config.js",
+    "server.js"
+  ]
+}

@@ -1,36 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom/server';
+import React from 'react'
+import ReactDOM from 'react-dom/server'
 
 // Main rendering function for React
-export default (templatePath, props = {}, options = {} ) => {
-
+export default (templatePath, props = {}, options = {}) => {
   try {
     // Option for isStatic rendering
     // False if we want to do a static first load
     // but dynamic interation subsequently.
     // i.e. React Server side rendering style
-    const isStatic = (options.isStatic !== void 0) ? options.isStatic : true;
+    const isStatic = (options.isStatic !== void 0) ? options.isStatic : true
 
     // Initialize the template as a factory
     // and apply the options into the factory.
-    const template = require(templatePath);
-    const component = React.createElement(template, props);
+    const component = require(templatePath)
 
-    let content = '';
+    let content = ''
 
     if (isStatic) {
       // renderToStaticMarkup (React ids removed)
-      content = ReactDOM.renderToStaticMarkup(component);
+      content = ReactDOM.renderToStaticMarkup(<component {...props} />)
     } else {
       // renderToString (with React ids)
-      content = ReactDOM.renderToString(component);
+      content = ReactDOM.renderToString(<component {...props} />)
     }
 
-    return { error: null, result: content };
-
+    return { error: null, result: content }
   } catch (error) {
-    return { error, result: null };
+    return { error, result: null }
   }
-};
-
+}
 
