@@ -20,6 +20,7 @@ export default (options = {}) => {
     html = true,
     pattern = '**/*',
     preserve = false,
+    requireIgnoreExt = [],
     noConflict = true,
     baseFileDirectory = null
   } = options
