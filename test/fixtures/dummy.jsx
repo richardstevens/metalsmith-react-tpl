@@ -1,4 +1,4 @@
-import React from 'react'
+const React = require('react')
 
 class Test extends React.Component {
   render () {
@@ -16,4 +16,4 @@ Test.defaultProps = {
   text: 'foo bar'
 }
 
-export default Test
+module.exports = Test

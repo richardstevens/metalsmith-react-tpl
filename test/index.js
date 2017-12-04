@@ -1,9 +1,9 @@
 import chai from 'chai'
 import chaiLint from 'chai-lint'
-chai.use(chaiLint)
-const { expect } = chai
 import index from '../lib/index'
 import path from 'path'
+chai.use(chaiLint)
+const { expect } = chai
 
 const metalsmith = {
   metadata: () => { return { } },

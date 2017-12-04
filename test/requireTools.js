@@ -1,9 +1,9 @@
 import chai from 'chai'
 import chaiLint from 'chai-lint'
-chai.use(chaiLint)
-const { expect } = chai
 import requireTools from '../lib/requireTools'
 import path from 'path'
+chai.use(chaiLint)
+const { expect } = chai
 const file = path.join(__dirname, 'requireTools.js')
 
 describe('requireTools', function () {

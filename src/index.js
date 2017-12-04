@@ -8,6 +8,7 @@ import { each } from 'async'
 import objectAssign from 'object-assign'
 import naiveTemplates from './naiveTemplates'
 import renderReactTemplates from './renderReactTemplates'
+import requireTools from './requireTools'
 
 const debug = debugCore('metalsmith-react-tpl')
 
@@ -19,12 +20,30 @@ export default (options = {}) => {
     html = true,
     pattern = '**/*',
     preserve = false,
+    requireIgnoreExt = [],
     noConflict = true,
     baseFileDirectory = null
   } = options
 
   let { baseFile = null } = options
   let originalBase = baseFile
+
+  // Ensure .jsx transformation
+  if (!require.extensions['.jsx']) { // eslint-disable-line node/no-deprecated-api
+    const tooling = options.tooling
+
+    require.extensions['.jsx'] = requireTools.babelCore.bind(null, tooling) // eslint-disable-line node/no-deprecated-api
+  }
+
+  // Adding File ignore in requires.
+  // In the event build systms like webpack is used.
+  if (Array.isArray(requireIgnoreExt) && requireIgnoreExt.length) {
+    requireIgnoreExt.forEach((ext) => {
+      if (!require.extensions[ext]) { // eslint-disable-line node/no-deprecated-api
+        require.extensions[ext] = requireTools.ignore // eslint-disable-line node/no-deprecated-api
+      }
+    })
+  }
 
   return (files, metalsmith, done) => {
     const metadata = metalsmith.metadata()

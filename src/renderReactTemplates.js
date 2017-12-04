@@ -12,16 +12,17 @@ export default (templatePath, props = {}, options = {}) => {
 
     // Initialize the template as a factory
     // and apply the options into the factory.
-    const component = require(templatePath)
+    const template = require(templatePath)
+    const component = React.createElement(template, props)
 
     let content = ''
 
     if (isStatic) {
       // renderToStaticMarkup (React ids removed)
-      content = ReactDOM.renderToStaticMarkup(<component {...props} />)
+      content = ReactDOM.renderToStaticMarkup(component)
     } else {
       // renderToString (with React ids)
-      content = ReactDOM.renderToString(<component {...props} />)
+      content = ReactDOM.renderToString(component)
     }
 
     return { error: null, result: content }
