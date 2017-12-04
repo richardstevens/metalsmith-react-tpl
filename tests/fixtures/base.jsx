@@ -13,6 +13,6 @@ class Test extends React.Component {
       </html>
     )
   }
-};
+}
 
 export default Test

@@ -10,7 +10,7 @@ class Test extends React.Component {
       </div>
     )
   }
-};
+}
 
 Test.defaultProps = {
   text: 'foo bar'
