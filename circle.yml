@@ -1,11 +1,11 @@
 machine:
   node:
-    version: 4.4.4
+    version: 6.1
 dependencies:
   cache_directories:
     - node_modules
   override:
-    - npm install -g npm@3.9.0
+    - npm install -g npm@3.9.4
     - npm install
 test:
   override:
