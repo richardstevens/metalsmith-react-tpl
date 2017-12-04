@@ -29,18 +29,18 @@ export default (options = {}) => {
   let originalBase = baseFile
 
   // Ensure .jsx transformation
-  if (!require.extensions['.jsx']) { // eslint-disable-line node/no-deprecated-api
+  if (!require.extensions['.jsx']) {
     const tooling = options.tooling
 
-    require.extensions['.jsx'] = requireTools.babelCore.bind(null, tooling) // eslint-disable-line node/no-deprecated-api
+    require.extensions['.jsx'] = requireTools.babelCore.bind(null, tooling)
   }
 
   // Adding File ignore in requires.
   // In the event build systms like webpack is used.
   if (Array.isArray(requireIgnoreExt) && requireIgnoreExt.length) {
     requireIgnoreExt.forEach((ext) => {
-      if (!require.extensions[ext]) { // eslint-disable-line node/no-deprecated-api
-        require.extensions[ext] = requireTools.ignore // eslint-disable-line node/no-deprecated-api
+      if (!require.extensions[ext]) {
+        require.extensions[ext] = requireTools.ignore
       }
     })
   }
@@ -86,13 +86,13 @@ export default (options = {}) => {
       }
 
       // Buffer back the result
-      data.contents = Buffer.from(result)
+      data.contents = new Buffer(result)
 
       // If `baseFile` is specified,
       // insert content into the file.
       if (baseFile) {
         debug('Applying baseFile to contents: %s', file)
-        const dir = baseFileDirectory || directory
+        const dir = baseFileDirectory ? baseFileDirectory : directory
         const baseFilePath = metalsmith.path(dir, baseFile)
         if (path.extname(baseFile) === '.jsx') {
           debug('Using JSX baseFile: %s', baseFile)

@@ -30,3 +30,4 @@ export default (templatePath, props = {}, options = {}) => {
     return { error, result: null }
   }
 }
+

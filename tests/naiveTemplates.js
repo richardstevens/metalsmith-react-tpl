@@ -16,3 +16,4 @@ describe('naiveTemplates', function () {
     expect(result.contents.toString()).to.equal('{{foo}}')
   })
 })
+

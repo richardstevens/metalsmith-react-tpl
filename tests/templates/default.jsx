@@ -15,4 +15,4 @@ class Test extends React.Component {
   }
 }
 
-module.exports = Test
+export default Test

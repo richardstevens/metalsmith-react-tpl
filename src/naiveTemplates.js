@@ -10,7 +10,8 @@ export default (str, data) => {
   }
 
   // Assign the final result back into the contents field
-  data.contents = Buffer.from(str)
+  data.contents = new Buffer(str)
 
   return data
 }
+
