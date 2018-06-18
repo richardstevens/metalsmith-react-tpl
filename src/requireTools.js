@@ -1,11 +1,17 @@
 import { transformFileSync } from 'babel-core'
+import { basename } from 'path'
+import debugCore from 'debug'
 
-// Extensions for `require` to accept jsx
+const debug = debugCore('metalsmith-react-tpl')
 
 // Runs babel transform
 function babelCore (tooling = {}, module, filename) {
-  let compiled = transformFileSync(filename, tooling).code
-  return module._compile(compiled, filename)
+  var compiled = transformFileSync(filename, tooling).code
+
+  var startTime = new Date()
+  var code = module._compile(compiled, filename)
+  debug('%sms \t- Finished %s', (new Date() - startTime), basename(filename))
+  return code
 }
 
 // Ignoring Files
