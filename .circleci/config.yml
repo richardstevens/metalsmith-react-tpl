@@ -70,7 +70,9 @@ jobs:
           command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/metalsmith-react-tpl/.npmrc
       - run:
           name: Publish package
-          command: npm publish
+          command: |
+            npm adduser
+            npm publish
 
 
 workflows:
