@@ -66,10 +66,11 @@ jobs:
       # Restore dependencies from cache
       - *restore_workspace
       - run:
-          name: 'Deploying to NPM'
-          command: |
-            echo -e "$NPM_USER\n$NPM_PASS\n$NPM_EMAIL" | npm login
-            npm publish
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
+      - run:
+          name: Publish package
+          command: npm publish
 
 
 workflows:
