@@ -2,7 +2,7 @@ version: 2
 
 references:
   workspace_root: &workspace_root
-    ~/static-site-generator
+    ~/metalsmith-react-tpl
   restore_workspace: &restore_workspace
     attach_workspace:
       at: *workspace_root
@@ -67,7 +67,7 @@ jobs:
       - *restore_workspace
       - run:
           name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/metalsmith-react-tpl/.npmrc
       - run:
           name: Publish package
           command: npm publish
