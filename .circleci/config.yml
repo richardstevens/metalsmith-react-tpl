@@ -1,19 +1,7 @@
 version: 2
 
-references:
-  workspace_root: &workspace_root
-    ~/metalsmith-react-tpl
-  restore_workspace: &restore_workspace
-    attach_workspace:
-      at: *workspace_root
-  save_workspace: &save_workspace
-    persist_to_workspace:
-      root: .
-      paths:
-        - .
-
 defaults: &defaults
-  working_directory: *workspace_root
+  working_directory: ~/metalsmith-react-tpl
   docker:
     - image: circleci/node:10.14.0
 
@@ -22,15 +10,7 @@ jobs:
     <<: *defaults
     steps:
       # Checkout the code from the branch into the working_directory
-      - restore_cache:
-          key: v1-github-{{ .Environment.CIRCLE_SHA1 }}
-          name: Restore Github Cache
       - checkout
-      - save_cache:
-          key: v1-github-{{ .Environment.CIRCLE_SHA1 }}
-          name: Save Github Cache
-          paths:
-            - .
       # Log the current branch
       - run:
           name: Branch and name
@@ -38,41 +18,33 @@ jobs:
             echo ${CIRCLE_BRANCH}
             echo ${CIRCLE_USERNAME}
       - restore_cache:
-          key: v1-defaults-{{ checksum "package.json" }}
-          name: Restore Default Modules Cache
-      # Install project dependencies
-      - run:
-          name: Installing Defaults
-          command: |
-            if [[ -d "node_modules" ]]; then echo "Skipping"; else npm install; fi
-      - save_cache:
-          key: v1-defaults-{{ checksum "package.json" }}
-          name: Save Default Modules Cache
-          paths:
-            - ./node_modules/
-      - run:
-          name: Run build
-          command: npm run build
-      - *save_workspace
-  test:
-    <<: *defaults
-    steps:
-      # Restore dependencies from cache
-      - *restore_workspace
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+
+      - run: npm install
       - run: npm run ci
+      # Install project dependencies
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - persist_to_workspace:
+          root: ~/metalsmith-react-tpl
+          paths: .
   deploy:
     <<: *defaults
     steps:
       # Restore dependencies from cache
-      - *restore_workspace
+      - attach_workspace:
+          at: ~/metalsmith-react-tpl
       - run:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/metalsmith-react-tpl/.npmrc
       - run:
           name: Publish package
-          command: |
-            npm adduser
-            npm publish
+          command: npm publish
 
 
 workflows:
@@ -80,12 +52,9 @@ workflows:
   ssg:
     jobs:
       - initialise
-      - test:
-          requires:
-            - initialise
       - deploy:
           requires:
-            - test
+            - initialise
           filters:
             branches:
               only: master
