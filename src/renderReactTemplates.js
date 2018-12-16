@@ -1,23 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/server'
-import { dirname, join } from 'path'
-import { transformFileSync } from 'babel-core'
-import { babelCore } from './requireTools'
-
-// Ensure .jsx transformation
-if (!require.extensions['.jsx']) {
-  require.extensions['.jsx'] = babelCore.bind(null, {})
-}
-
-function requireFromString (src, filename) {
-  var Module = module.constructor
-  var m = new Module(filename, module.parent)
-  m.paths = Module._nodeModulePaths(dirname(filename))
-  m.paths.push(join(dirname(filename)))
-  m.filename = filename
-  m._compile(src, filename)
-  return m.exports
-}
+import { transformFileSync } from '@babel/core'
 
 // Main rendering function for React
 export default (templatePath, props = {}, options = {}) => {
@@ -30,8 +13,8 @@ export default (templatePath, props = {}, options = {}) => {
 
     // Initialize the template as a factory
     // and apply the options into the factory.
-    let code = transformFileSync(templatePath, {}).code
-    code = requireFromString(code, templatePath)
+    let code = require(transformFileSync(templatePath, {}).code) /* eslint-disable-line */
+    if (code.hasOwnProperty('default')) code = code.default
     const component = React.createElement(code, props)
 
     let content = ''

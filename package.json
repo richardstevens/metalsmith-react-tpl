@@ -1,15 +1,14 @@
 {
   "name": "metalsmith-react-tpl",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "Use React in metalsmith as a templating language",
   "main": "lib/index.js",
   "scripts": {
     "build": "babel ./src -d ./lib",
     "clean": "rm -rf ./lib",
-    "prepublish": "npm run build",
-    "coverage": "npm run build && istanbul cover _mocha -- --compilers js:babel/register tests/*.js && istanbul check-coverage --statements 98 --branches 91 --functions 100 --lines 98",
-    "ci": "npm run coverage && npm run lint",
-    "lint": "eslint tests src && echo 'All Good!'"
+    "prepare": "npm run build",
+    "ci": "npm run lint",
+    "lint": "eslint src && echo 'All Good!'"
   },
   "repository": {
     "type": "git",
@@ -32,25 +31,20 @@
   },
   "homepage": "https://github.com/richardstevens/metalsmith-react-tpl",
   "dependencies": {
-    "babel": "^5.8.23",
+    "@babel/core": "^7.2.0",
+    "@babel/cli": "^7.2.0",
+    "babel-loader": "^8.0.0",
+    "@babel/preset-env": "^7.2.0",
     "async": "^0.9.0",
-    "babel-core": "^5.6.7",
     "debug": "^2.2.0",
     "multimatch": "^2.0.0",
     "object-assign": "^2.0.0",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0"
   },
   "devDependencies": {
-    "chai": "^3.4.1",
-    "chai-lint": "^0.1.1",
-    "eslint": "^1.10.3",
+    "eslint": "^5.10.0",
     "eslint-plugin-mocha": "^1.1.0",
-    "eslint-plugin-react": "^3.15.0",
-    "istanbul": "^0.4.2",
-    "metalsmith": "^2.3.0",
-    "mocha": "^2.3.4",
-    "publish": "^0.6.0",
-    "sinon": "^1.17.2"
+    "eslint-plugin-react": "^3.15.0"
   }
 }

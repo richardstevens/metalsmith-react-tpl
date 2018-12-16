@@ -8,7 +8,6 @@ import { each } from 'async'
 import objectAssign from 'object-assign'
 import naiveTemplates from './naiveTemplates'
 import renderReactTemplates from './renderReactTemplates'
-import requireTools from './requireTools'
 
 const debug = debugCore('metalsmith-react-tpl')
 
@@ -20,30 +19,12 @@ export default (options = {}) => {
     html = true,
     pattern = '**/*',
     preserve = false,
-    requireIgnoreExt = [],
     noConflict = true,
     baseFileDirectory = null
   } = options
 
   let { baseFile = null } = options
   let originalBase = baseFile
-
-  // Ensure .jsx transformation
-  if (!require.extensions['.jsx']) {
-    const tooling = options.tooling
-
-    require.extensions['.jsx'] = requireTools.babelCore.bind(null, tooling)
-  }
-
-  // Adding File ignore in requires.
-  // In the event build systms like webpack is used.
-  if (Array.isArray(requireIgnoreExt) && requireIgnoreExt.length) {
-    requireIgnoreExt.forEach((ext) => {
-      if (!require.extensions[ext]) {
-        require.extensions[ext] = requireTools.ignore
-      }
-    })
-  }
 
   return (files, metalsmith, done) => {
     const metadata = metalsmith.metadata()
@@ -86,7 +67,7 @@ export default (options = {}) => {
       }
 
       // Buffer back the result
-      data.contents = new Buffer(result)
+      data.contents = Buffer.from(result) /* eslint-disable-line */
 
       // If `baseFile` is specified,
       // insert content into the file.
