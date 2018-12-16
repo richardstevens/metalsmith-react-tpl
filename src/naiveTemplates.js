@@ -10,7 +10,7 @@ export default (str, data) => {
   }
 
   // Assign the final result back into the contents field
-  data.contents = new Buffer(str)
+  data.contents = Buffer.from(str) /* eslint-disable-line */
 
   return data
 }

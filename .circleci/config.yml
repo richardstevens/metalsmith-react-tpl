@@ -1,0 +1,88 @@
+version: 2
+
+references:
+  workspace_root: &workspace_root
+    ~/static-site-generator
+  restore_workspace: &restore_workspace
+    attach_workspace:
+      at: *workspace_root
+  save_workspace: &save_workspace
+    persist_to_workspace:
+      root: .
+      paths:
+        - .
+
+defaults: &defaults
+  working_directory: *workspace_root
+  docker:
+    - image: circleci/node:10.14.0
+
+jobs:
+  initialise:
+    <<: *defaults
+    steps:
+      # Checkout the code from the branch into the working_directory
+      - restore_cache:
+          key: v1-github-{{ .Environment.CIRCLE_SHA1 }}
+          name: Restore Github Cache
+      - checkout
+      - save_cache:
+          key: v1-github-{{ .Environment.CIRCLE_SHA1 }}
+          name: Save Github Cache
+          paths:
+            - .
+      # Log the current branch
+      - run:
+          name: Branch and name
+          command: |
+            echo ${CIRCLE_BRANCH}
+            echo ${CIRCLE_USERNAME}
+      - restore_cache:
+          key: v1-defaults-{{ checksum "package.json" }}
+          name: Restore Default Modules Cache
+      # Install project dependencies
+      - run:
+          name: Installing Defaults
+          command: |
+            if [[ -d "node_modules" ]]; then echo "Skipping"; else npm install; fi
+      - save_cache:
+          key: v1-defaults-{{ checksum "package.json" }}
+          name: Save Default Modules Cache
+          paths:
+            - ./node_modules/
+      - run:
+          name: Run build
+          command: npm run build
+      - *save_workspace
+  test:
+    <<: *defaults
+    steps:
+      # Restore dependencies from cache
+      - *restore_workspace
+      - run: npm run ci
+  deploy:
+    <<: *defaults
+    steps:
+      # Restore dependencies from cache
+      - *restore_workspace
+      - run:
+          name: 'Deploying to NPM'
+          command: |
+            echo -e "$NPM_USER\n$NPM_PASS\n$NPM_EMAIL" | npm login
+            npm publish
+
+
+workflows:
+  version: 2
+  ssg:
+    jobs:
+      - initialise
+      - test:
+          requires:
+            - initialise
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
