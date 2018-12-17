@@ -13,7 +13,7 @@ export default (templatePath, props = {}, options = {}) => {
 
     // Initialize the template as a factory
     // and apply the options into the factory.
-    let code = require(templatePath)
+    let code = require(templatePath) /* eslint-disable-line */
     if (code.hasOwnProperty('default')) code = code.default
     const component = React.createElement(code, props)
 
