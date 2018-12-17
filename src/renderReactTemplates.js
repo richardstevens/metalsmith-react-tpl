@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/server'
-import { transformFileSync } from '@babel/core'
+import '@babel/register'
 
 // Main rendering function for React
 export default (templatePath, props = {}, options = {}) => {
@@ -13,7 +13,7 @@ export default (templatePath, props = {}, options = {}) => {
 
     // Initialize the template as a factory
     // and apply the options into the factory.
-    let code = require(transformFileSync(templatePath, {}).code) /* eslint-disable-line */
+    let code = require(templatePath)
     if (code.hasOwnProperty('default')) code = code.default
     const component = React.createElement(code, props)
 

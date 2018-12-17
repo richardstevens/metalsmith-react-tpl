@@ -1,5 +1,4 @@
 {
-  "sourceType": "unambiguous",
   "presets": [
     ["@babel/preset-env", {
       "targets": {
@@ -12,5 +11,8 @@
         ]
       }
     }]
+  ],
+  "plugins": [
+    ["@babel/plugin-syntax-dynamic-import"]
   ]
 }
