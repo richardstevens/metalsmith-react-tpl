@@ -20,7 +20,8 @@ export default (options = {}) => {
     pattern = '**/*',
     preserve = false,
     noConflict = true,
-    baseFileDirectory = null
+    baseFileDirectory = null,
+    searchJS = false
   } = options
 
   let { baseFile = null } = options
@@ -75,7 +76,7 @@ export default (options = {}) => {
         debug('Applying baseFile to contents: %s', file)
         const dir = baseFileDirectory ? baseFileDirectory : directory
         const baseFilePath = metalsmith.path(dir, baseFile)
-        if (path.extname(baseFile) === '.jsx') {
+        if (path.extname(baseFile) === '.jsx' || searchJS) {
           debug('Using JSX baseFile: %s', baseFile)
           props.children = result
           const newOptions = objectAssign({ }, options, {
